@@ -9,7 +9,8 @@
 
 - Clone o projeto do repositório
  
-``
+`https://github.com/felnente/universe.git`
+
 - Acesse o diretório do projeto e rode o comando:
 
 `docker-compose up -d`
