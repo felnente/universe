@@ -1,0 +1,83 @@
+version: '2'
+services:
+
+    # Uncomment this if you need to test the tracing system locally
+    # Also set APP_ENV to production.
+    #  jaeger:
+    # tutorial   image: jaegertracing/all-in-one:latest
+    #    ports:
+    #      - 16686:16686
+
+    php:
+        image: digitalidea/laravel
+        volumes:
+            - ./:/var/www/html
+        depends_on:
+            - mysql
+            - mongodb
+            - beanstalkd
+            - mail
+        ports:
+            - 80:80
+            - 8080:8080
+        environment:
+            - XDEBUG_ENABLED=true
+            - VIRTUAL_HOST=universe.localhost
+            - VIRTUAL_PORT=80
+        networks:
+             - mysql-compose-network
+
+    mongodb:
+        image: mongo:4.0
+        volumes:
+            - ~/.universe/mongo/data:/data/db
+        ports:
+            - 28017
+            - 27017
+
+    beanstalkd:
+        image: schickling/beanstalkd
+        ports:
+            - 11300
+
+    adminer:
+        image: adminer:4.6.2
+        depends_on:
+            - mysql
+        environment:
+            - VIRTUAL_HOST=adminer.universe.localhost
+            - VIRTUAL_PORT=8080
+
+    mail:
+        image: bradjones1/docker-mailcatcher
+        ports:
+            - 1025
+            - 1080
+        environment:
+            - VIRTUAL_HOST=mailcatcher.universe.localhost
+            - VIRTUAL_PORT=1080
+
+    mongoclient:
+        image: mongoclient/mongoclient
+        depends_on:
+            - mongodb
+        environment:
+            - VIRTUAL_HOST=mongoclient.universe.localhost
+            - VIRTUAL_PORT=3000
+    mysql:
+        image: mysql:5.7
+        environment:
+            MYSQL_ROOT_PASSWORD: "mysql"
+            MYSQL_DATABASE: "mysql"
+        ports:
+            - "3306:3306"
+        volumes:
+            -  ~/.universe/mysql/data:/var/lib/mysql
+        networks:
+            - mysql-compose-network
+
+networks:
+    mysql-compose-network:
+        driver: bridge
+
+
