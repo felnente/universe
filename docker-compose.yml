@@ -26,44 +26,6 @@ services:
             - VIRTUAL_PORT=80
         networks:
              - mysql-compose-network
-
-    mongodb:
-        image: mongo:4.0
-        volumes:
-            - ~/.universe/mongo/data:/data/db
-        ports:
-            - 28017
-            - 27017
-
-    beanstalkd:
-        image: schickling/beanstalkd
-        ports:
-            - 11300
-
-    adminer:
-        image: adminer:4.6.2
-        depends_on:
-            - mysql
-        environment:
-            - VIRTUAL_HOST=adminer.universe.localhost
-            - VIRTUAL_PORT=8080
-
-    mail:
-        image: bradjones1/docker-mailcatcher
-        ports:
-            - 1025
-            - 1080
-        environment:
-            - VIRTUAL_HOST=mailcatcher.universe.localhost
-            - VIRTUAL_PORT=1080
-
-    mongoclient:
-        image: mongoclient/mongoclient
-        depends_on:
-            - mongodb
-        environment:
-            - VIRTUAL_HOST=mongoclient.universe.localhost
-            - VIRTUAL_PORT=3000
     mysql:
         image: mysql:5.7
         environment:
