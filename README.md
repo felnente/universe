@@ -19,6 +19,10 @@
 
 `docker-compose exec php bash`
 
+- De permissão no diretório storage:
+
+`chmod 777 storage`
+
 - Rode o composer install para instalar as dependências
 
 `composer install`
