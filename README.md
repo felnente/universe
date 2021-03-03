@@ -21,7 +21,7 @@
 
 - De permissão no diretório storage:
 
-`chmod 777 storage`
+`chmod 777 -R storage`
 
 - Rode o composer install para instalar as dependências
 
